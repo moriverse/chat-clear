@@ -1,0 +1,226 @@
+[
+ {
+  "id": "N01",
+  "scene": "s01",
+  "speaker": "narrator",
+  "text": "在世界的尽头，有一片从来没有船经过的海。",
+  "en": "At the edge of the world, there is a sea where no ship has ever sailed."
+ },
+ {
+  "id": "N02",
+  "scene": "s01",
+  "speaker": "narrator",
+  "text": "海中央，有一座小小的灯塔。灯塔里，住着一个老机器人。",
+  "en": "In the middle of it stands a tiny lighthouse. And in the lighthouse lives an old robot."
+ },
+ {
+  "id": "N03",
+  "scene": "s01",
+  "speaker": "narrator",
+  "text": "他的名字，叫阿灯。",
+  "en": "His name is Deng."
+ },
+ {
+  "id": "D01",
+  "scene": "s02",
+  "speaker": "deng",
+  "text": "晚上好，大海。今天，也要好好发光哦。",
+  "en": "Good evening, sea. Let's shine our best tonight, too."
+ },
+ {
+  "id": "N04",
+  "scene": "s02",
+  "speaker": "narrator",
+  "text": "三百年来，阿灯每天晚上都会点亮灯塔。可是，从来没有一艘船来过。",
+  "en": "For three hundred years, Deng has lit the lighthouse every night. But not a single ship has ever come."
+ },
+ {
+  "id": "D02",
+  "scene": "s02",
+  "speaker": "deng",
+  "text": "要是有人，能看见这束光，就好了。",
+  "en": "If only someone could see this light."
+ },
+ {
+  "id": "D03",
+  "scene": "s03",
+  "speaker": "deng",
+  "text": "咦？那是，什么？",
+  "en": "Huh? What... is that?"
+ },
+ {
+  "id": "D04",
+  "scene": "s03",
+  "speaker": "deng",
+  "text": "掉进海里了！",
+  "en": "It fell into the sea!"
+ },
+ {
+  "id": "G01",
+  "scene": "s04",
+  "speaker": "guang",
+  "text": "呜呜，好冷，好黑。",
+  "en": "Hic... so cold... so dark..."
+ },
+ {
+  "id": "D05",
+  "scene": "s04",
+  "speaker": "deng",
+  "text": "别怕，别怕。我叫阿灯。你是从天上掉下来的吗？",
+  "en": "Don't be scared. I'm Deng. Did you fall from the sky?"
+ },
+ {
+  "id": "G02",
+  "scene": "s04",
+  "speaker": "guang",
+  "text": "我叫小光。我在天上追流星，一不小心，就掉下来了。",
+  "en": "I'm Guang. I was chasing shooting stars, and... I slipped and fell."
+ },
+ {
+  "id": "G03",
+  "scene": "s04",
+  "speaker": "guang",
+  "text": "天亮以前，我一定要回家。不然，我就会熄灭的。",
+  "en": "I have to get home before sunrise. Or else... my light will go out."
+ },
+ {
+  "id": "D06",
+  "scene": "s04",
+  "speaker": "deng",
+  "text": "别担心。我们一起想办法！",
+  "en": "Don't worry. We'll figure it out together!"
+ },
+ {
+  "id": "D07",
+  "scene": "s05",
+  "speaker": "deng",
+  "text": "一、二、三，飞！",
+  "en": "One, two, three... fly!"
+ },
+ {
+  "id": "G04",
+  "scene": "s05",
+  "speaker": "guang",
+  "text": "哈哈，再高一点！",
+  "en": "Haha! Higher!"
+ },
+ {
+  "id": "D08",
+  "scene": "s05",
+  "speaker": "deng",
+  "text": "那就，再高一点！",
+  "en": "Then... higher it is!"
+ },
+ {
+  "id": "G05",
+  "scene": "s05",
+  "speaker": "guang",
+  "text": "哈哈哈！阿灯，你好笨呀！",
+  "en": "Hahaha! Deng, you're so clumsy!"
+ },
+ {
+  "id": "G06",
+  "scene": "s05",
+  "speaker": "guang",
+  "text": "阿灯，你一直都是一个人吗？",
+  "en": "Deng... have you always been alone?"
+ },
+ {
+  "id": "D10",
+  "scene": "s05",
+  "speaker": "deng",
+  "text": "是啊。不过今天晚上，不是了。",
+  "en": "Yes. But not tonight."
+ },
+ {
+  "id": "G07",
+  "scene": "s05",
+  "speaker": "guang",
+  "text": "阿灯，我好像，越来越暗了。",
+  "en": "Deng... I think I'm getting dimmer."
+ },
+ {
+  "id": "D11",
+  "scene": "s06",
+  "speaker": "deng",
+  "text": "灯塔的光，能照得很远很远。也许，也能照到天上！",
+  "en": "The lighthouse can shine very, very far. Maybe... all the way to the sky!"
+ },
+ {
+  "id": "D12",
+  "scene": "s06",
+  "speaker": "deng",
+  "text": "还不够，还差一点点。",
+  "en": "Not enough... just a little more."
+ },
+ {
+  "id": "G08",
+  "scene": "s06",
+  "speaker": "guang",
+  "text": "阿灯，那是你的心。不要！",
+  "en": "Deng, that's your heart. Don't!"
+ },
+ {
+  "id": "D13",
+  "scene": "s06",
+  "speaker": "deng",
+  "text": "三百年了，我一直在等一艘船。",
+  "en": "For three hundred years, I've been waiting for a ship."
+ },
+ {
+  "id": "D14",
+  "scene": "s06",
+  "speaker": "deng",
+  "text": "原来，我等的，是你。",
+  "en": "Now I know. I was waiting for you."
+ },
+ {
+  "id": "G09",
+  "scene": "s06",
+  "speaker": "guang",
+  "text": "阿灯，阿灯！",
+  "en": "Deng! Deng!"
+ },
+ {
+  "id": "D15",
+  "scene": "s06",
+  "speaker": "deng",
+  "text": "回家吧，小光。",
+  "en": "Go home, Guang."
+ },
+ {
+  "id": "W01",
+  "scene": "s07",
+  "speaker": "whale",
+  "text": "谢谢你，守灯人。",
+  "en": "Thank you, keeper of the light."
+ },
+ {
+  "id": "G10",
+  "scene": "s07",
+  "speaker": "guang",
+  "text": "阿灯！以后每天晚上，我都会在天上，看着你！",
+  "en": "Deng! Every night from now on, I'll be up there, watching you!"
+ },
+ {
+  "id": "D16",
+  "scene": "s07",
+  "speaker": "deng",
+  "text": "好。我也会一直，为你发光。",
+  "en": "Okay. And I'll keep shining for you. Always."
+ },
+ {
+  "id": "N05",
+  "scene": "s08",
+  "speaker": "narrator",
+  "text": "从那以后，每当阿灯点亮灯塔，天上总有一颗星星，一闪，一闪，回答他。",
+  "en": "From then on, whenever Deng lit the lighthouse, one star in the sky would twinkle back. Blink. Blink."
+ },
+ {
+  "id": "N06",
+  "scene": "s08",
+  "speaker": "narrator",
+  "text": "原来，每一束光，都会被看见。",
+  "en": "Because every light, in the end, is seen by someone."
+ }
+]
