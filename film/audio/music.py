@@ -2130,6 +2130,7 @@ def ride_gain(mix, pivot=-22.0, ratio=1.6):
         pts = [(s0 - 0.35, 0), (s0 - 0.05, dip), (e0, dip), (e0 + 0.2, 0)]
         mm = (CT >= pts[0][0]) & (CT <= pts[-1][0])
         g[mm] += np.interp(CT[mm], [q[0] for q in pts], [q[1] for q in pts])
+    g = g - 2.0 * DUCK                     # a touch more room under every line
     np.save(str(MUSDIR / 'ride_gain_db.npy'), g.astype(np.float32))
     return ctl_to_audio(10 ** (g / 20))
 
