@@ -117,9 +117,9 @@ def apply(surface, scale, grade, frame_index):
         m = skia.Matrix()
         m.setScale(scale * 1.5, scale * 1.5)
         m.postTranslate((frame_index * 97) % 256, (frame_index * 61) % 256)
-        gp = skia.Paint()
-        gp.setShader(img.makeShader(skia.TileMode.kRepeat, skia.TileMode.kRepeat,
-                                    skia.SamplingOptions(skia.FilterMode.kLinear), m))
+        # (Paint(Shader=...) — setShader() is slow for image shaders in this skia build)
+        gp = skia.Paint(Shader=img.makeShader(skia.TileMode.kRepeat, skia.TileMode.kRepeat,
+                                              skia.SamplingOptions(skia.FilterMode.kLinear), m))
         gp.setBlendMode(skia.BlendMode.kOverlay)
         gp.setAlphaf(clamp(g['grain'] * 2))
         c.drawRect(skia.Rect.MakeWH(w, h), gp)
