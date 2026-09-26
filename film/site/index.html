@@ -1,0 +1,389 @@
+<title>一盏灯，一颗星</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@600;900&family=Noto+Sans+SC:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    color-scheme: dark;
+    --night: #070b1f;
+    --deep: #0e1633;
+    --panel: #121c3f;
+    --line: rgba(159, 196, 255, 0.16);
+    --ink: #eef0f8;
+    --muted: #a3aecd;
+    --faint: #6f7ba0;
+    --gold: #ffd36b;
+    --amber: #ffb347;
+    --teal: #7fb5c2;
+    --sky: #9fc4ff;
+    --serif: "Noto Serif SC", "Songti SC", "STSong", serif;
+    --sans: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", system-ui, sans-serif;
+    --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  }
+  [hidden] { display: none !important; }
+  html { background: var(--night); }
+  body {
+    background:
+      radial-gradient(1200px 520px at 50% -140px, rgba(60, 86, 170, 0.45), transparent 70%),
+      var(--night);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 16px;
+    line-height: 1.75;
+    padding-inline: 16px;
+    padding-block: 0 64px;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; display: grid; gap: 56px; }
+  header { padding-top: 56px; display: grid; gap: 10px; justify-items: center; text-align: center; }
+  .eyebrow { font-family: var(--mono); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--faint); }
+  h1 {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: clamp(40px, 7vw, 76px);
+    line-height: 1.1;
+    letter-spacing: 0.06em;
+    color: #fff6e0;
+    text-shadow: 0 0 28px rgba(255, 211, 107, 0.45), 0 0 2px rgba(255, 230, 170, 0.9);
+    text-wrap: balance;
+  }
+  .en-title { font-family: var(--serif); font-weight: 600; color: var(--sky); letter-spacing: 0.22em; font-size: 15px; }
+  .logline { max-width: 38em; color: var(--muted); margin: 8px 0 0; text-wrap: balance; }
+
+  /* ---------------- player ---------------- */
+  .player { display: grid; gap: 0; }
+  .screen {
+    position: relative; aspect-ratio: 16 / 9; max-width: 100%;
+    background: #000; border-radius: 10px 10px 0 0; overflow: hidden;
+    box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.9), 0 0 0 1px var(--line);
+  }
+  .screen video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; background: #000; }
+  .screen video.off { visibility: hidden; }
+  .big-play {
+    position: absolute; inset: 0; display: grid; place-items: center; border: 0; padding: 0; cursor: pointer;
+    background: center / cover no-repeat; color: var(--ink);
+  }
+  .big-play::before { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(7, 11, 31, 0.05), rgba(7, 11, 31, 0.55)); }
+  .big-play span {
+    position: relative; display: grid; place-items: center; gap: 6px;
+    font-family: var(--serif); font-size: 18px; letter-spacing: 0.1em;
+  }
+  .big-play svg { width: 84px; height: 84px; filter: drop-shadow(0 0 18px rgba(255, 211, 107, 0.6)); transition: transform .2s; }
+  .big-play:hover svg, .big-play:focus-visible svg { transform: scale(1.07); }
+  .bar {
+    display: flex; align-items: center; gap: 14px; padding: 10px 14px;
+    background: var(--deep); border: 1px solid var(--line); border-top: 0; border-radius: 0 0 10px 10px;
+  }
+  .bar button {
+    flex: none; width: 36px; height: 36px; display: grid; place-items: center;
+    background: transparent; border: 1px solid var(--line); border-radius: 50%; color: var(--ink); cursor: pointer;
+  }
+  .bar button:hover { border-color: var(--gold); color: var(--gold); }
+  button:focus-visible, .chapter:focus-visible, .scrub:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+  .scrub { position: relative; flex: 1; height: 28px; cursor: pointer; touch-action: none; }
+  .scrub .track { position: absolute; left: 0; right: 0; top: 12px; height: 4px; background: rgba(159, 196, 255, 0.18); border-radius: 2px; }
+  .scrub .fill { position: absolute; left: 0; top: 12px; height: 4px; width: 0; background: linear-gradient(90deg, var(--amber), var(--gold)); border-radius: 2px; box-shadow: 0 0 10px rgba(255, 211, 107, .6); }
+  .scrub .tick { position: absolute; top: 8px; width: 1px; height: 12px; background: rgba(238, 240, 248, 0.35); }
+  .tc { font-family: var(--mono); font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .tc b { color: var(--ink); font-weight: 500; }
+  .now { margin-top: 12px; display: flex; gap: 10px; align-items: baseline; color: var(--muted); font-size: 14px; min-height: 1.75em; }
+  .now strong { font-family: var(--serif); color: var(--gold); font-weight: 600; font-size: 16px; }
+
+  /* ---------------- chapters ---------------- */
+  h2 { margin: 0 0 18px; font-family: var(--serif); font-weight: 600; font-size: 24px; letter-spacing: 0.08em; text-wrap: balance; }
+  h2 small { font-family: var(--sans); font-weight: 400; font-size: 13px; color: var(--faint); letter-spacing: 0.12em; margin-left: 10px; text-transform: uppercase; }
+  .chapters { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+  .chapter {
+    display: grid; gap: 8px; padding: 0; text-align: left; background: none; border: 0; color: inherit; cursor: pointer; font: inherit;
+  }
+  .chapter img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 6px; box-shadow: 0 0 0 1px var(--line); transition: box-shadow .2s, filter .2s; filter: saturate(.9); }
+  .chapter:hover img, .chapter.on img { box-shadow: 0 0 0 2px var(--gold), 0 0 24px -4px rgba(255, 211, 107, .55); filter: none; }
+  .chapter .meta { display: flex; justify-content: space-between; gap: 8px; font-family: var(--mono); font-size: 12px; color: var(--faint); font-variant-numeric: tabular-nums; }
+  .chapter .zh { font-family: var(--serif); font-weight: 600; font-size: 17px; line-height: 1.3; }
+  .chapter .en { font-size: 13px; color: var(--muted); line-height: 1.3; }
+
+  /* ---------------- making of ---------------- */
+  .making { display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px; align-items: start; }
+  .prose p { margin: 0 0 14px; max-width: 34em; }
+  .prose p:last-child { margin-bottom: 0; }
+  .prose b { color: var(--gold); font-weight: 500; }
+  .facts { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--line); }
+  .facts li { padding: 14px 4px; border-bottom: 1px solid var(--line); display: grid; gap: 2px; }
+  .facts li:nth-child(odd) { border-right: 1px solid var(--line); padding-right: 16px; }
+  .facts li:nth-child(even) { padding-left: 16px; }
+  .facts .n { font-family: var(--serif); font-weight: 900; font-size: 28px; color: #fff6e0; font-variant-numeric: tabular-nums; line-height: 1.2; }
+  .facts .l { font-size: 13px; color: var(--muted); }
+
+  .team { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0 28px; }
+  .team div { padding: 12px 0; border-top: 1px solid var(--line); display: grid; gap: 2px; }
+  .team .role { font-family: var(--mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--teal); }
+  .team .what { font-size: 14px; color: var(--muted); }
+
+  .casting { background: var(--deep); border: 1px solid var(--line); border-radius: 10px; padding: 20px 20px 12px; }
+  .casting p { margin: 0 0 12px; color: var(--muted); font-size: 14px; max-width: 46em; }
+  .chart { overflow-x: auto; }
+  .chart svg { display: block; width: 100%; min-width: 560px; height: auto; }
+
+  footer { color: var(--faint); font-size: 13px; text-align: center; font-family: var(--mono); letter-spacing: .04em; }
+
+  @media (max-width: 860px) {
+    .chapters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .making { grid-template-columns: 1fr; }
+    .team { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 480px) {
+    .team { grid-template-columns: 1fr; }
+    .bar { gap: 10px; padding: 8px 10px; }
+    .tc .dur { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">A 4-minute animated short · 4 分 02 秒</div>
+    <h1>一盏灯，一颗星</h1>
+    <div class="en-title">A LAMP AND A STAR</div>
+    <p class="logline">世界尽头的灯塔里，住着一个老机器人。三百年来，从没有船来过。直到有一天晚上，一颗小星星掉进了海里。</p>
+  </header>
+
+  <section class="player" aria-label="影片播放器">
+    <div class="screen" id="screen">
+      <video id="vA" playsinline preload="auto"></video>
+      <video id="vB" class="off" playsinline preload="auto"></video>
+      <button class="big-play" id="bigPlay" aria-label="播放影片" style="background-image:url(cover.jpg)">
+        <span>
+          <svg viewBox="0 0 84 84" aria-hidden="true"><circle cx="42" cy="42" r="40" fill="rgba(7,11,31,.55)" stroke="#ffd36b" stroke-width="2"/><path d="M34 27 L60 42 L34 57 Z" fill="#ffd36b"/></svg>
+          播放 · Play
+        </span>
+      </button>
+    </div>
+    <div class="bar">
+      <button id="toggle" aria-label="播放或暂停">
+        <svg id="icoPlay" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M4 2 L14 8 L4 14 Z" fill="currentColor"/></svg>
+        <svg id="icoPause" width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" hidden><rect x="3" y="2" width="3.5" height="12" fill="currentColor"/><rect x="9.5" y="2" width="3.5" height="12" fill="currentColor"/></svg>
+      </button>
+      <div class="scrub" id="scrub" role="slider" tabindex="0" aria-label="播放进度" aria-valuemin="0" aria-valuemax="242" aria-valuenow="0">
+        <div class="track"></div><div class="fill" id="fill"></div>
+      </div>
+      <div class="tc"><b id="tcNow">00:00:00:00</b><span class="dur"> / 00:04:02:00</span></div>
+      <button id="fs" aria-label="全屏">
+        <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg>
+      </button>
+    </div>
+    <div class="now" id="now"></div>
+  </section>
+
+  <section aria-labelledby="chTitle">
+    <h2 id="chTitle">八个场景<small>Chapters · 24 fps timecode</small></h2>
+    <div class="chapters" id="chapters"></div>
+  </section>
+
+  <section aria-labelledby="mkTitle" style="display:grid;gap:32px">
+    <div>
+      <h2 id="mkTitle">它是怎么做出来的<small>How it was made</small></h2>
+      <div class="making">
+        <div class="prose">
+          <p>这部动画里的<b>每一帧画面、每一句话、每一个音符、每一声海浪</b>，都是用代码“算”出来的。没有画笔，没有录音，没有素材库。</p>
+          <p>画面：用 Python 和 Skia 一帧一帧地画。天空、大海、灯塔、机器人阿灯、小星星小光、星星鲸鱼，全都是数学形状和光。</p>
+          <p>声音：台词用电脑里的开源语音模型 Kokoro 说出来。再用语音识别 Whisper 把每一句“听”一遍，念不清就重做。机器人的声音加了金属回声，小星星的声音调高，鲸鱼妈妈的声音加了很大的回响。嘴巴跟着声音的大小一张一合。</p>
+          <p>音乐：代码写出每一个音符，放在故事的准确时刻（比如光柱冲上天的那一秒），再用 FluidSynth 演奏。216 个音效（脚步、流星、浪花、齿轮……）也全是用数学合成的。</p>
+          <p>团队：14 个 Claude 同时工作，由一个“导演” Claude 分配任务、检查每一张画面、最后拼成整部片子。</p>
+        </div>
+        <ul class="facts" aria-label="数字">
+          <li><span class="n">5,808</span><span class="l">帧画面（24 帧 / 秒）</span></li>
+          <li><span class="n">32</span><span class="l">句台词，4 个角色</span></li>
+          <li><span class="n">216</span><span class="l">个合成音效</span></li>
+          <li><span class="n">54</span><span class="l">个和画面对齐的音乐重音</span></li>
+          <li><span class="n">133</span><span class="l">个时间点（cue）连接画面与声音</span></li>
+          <li><span class="n">≈25,600</span><span class="l">行 Python 代码</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="team" aria-label="分工">
+      <div><span class="role">Director</span><span>导演</span><span class="what">剧本、配音、时间表、渲染引擎、检查与合成</span></div>
+      <div><span class="role">Sky · Sea</span><span>天空 · 大海与灯塔</span><span class="what">星空、银河、日出；海浪、倒影、灯塔内外</span></div>
+      <div><span class="role">Characters</span><span>阿灯 · 小光 · 星鲸</span><span class="what">可以摆姿势、会眨眼、会对口型的角色</span></div>
+      <div><span class="role">FX</span><span>光与魔法</span><span class="what">流星、浪花、发光浮游生物、光柱、星尘河</span></div>
+      <div><span class="role">Scenes ×7</span><span>八个场景</span><span class="what">镜头、表演、灯光、调色</span></div>
+      <div><span class="role">Music · Sound</span><span>音乐 · 音效 · 混音</span><span class="what">三个主题旋律；海浪、脚步、齿轮、鲸歌</span></div>
+    </div>
+
+    <div class="casting">
+      <h2 style="font-size:19px;margin-bottom:8px">用数据选演员<small>Voice casting by pitch</small></h2>
+      <p>电脑先让 90 种声音各念同一句台词，测量每种声音的音高（F0）。阿灯要低沉的声音，小光要最高、最活泼的声音，讲故事的人要温暖的中音。每个点是一种声音，亮的点是被选中的演员。</p>
+      <div class="chart" id="chart"></div>
+    </div>
+  </section>
+
+  <footer>Python · Skia · Kokoro TTS · Whisper · FluidSynth · ffmpeg · Claude</footer>
+</div>
+
+<script>
+(() => {
+  const FPS = 24, TOTAL = 242;
+  const CH = [
+    { id: 's01', zh: '开场', en: 'Opening', start: 0, dur: 24 },
+    { id: 's02', zh: '阿灯的夜晚', en: "Deng's evening", start: 24, dur: 27 },
+    { id: 's03', zh: '流星', en: 'The falling star', start: 51, dur: 20 },
+    { id: 's04', zh: '相遇', en: 'The meeting', start: 71, dur: 29 },
+    { id: 's05', zh: '想办法', en: 'Trying', start: 100, dur: 38 },
+    { id: 's06', zh: '灯塔的光', en: 'The beam', start: 138, dur: 48 },
+    { id: 's07', zh: '回答', en: 'The answer', start: 186, dur: 34 },
+    { id: 's08', zh: '尾声', en: 'Epilogue', start: 220, dur: 22 },
+  ];
+  const $ = (id) => document.getElementById(id);
+  const tc = (s) => {
+    const f = Math.floor(Math.max(0, s) * FPS + 1e-6);
+    const p = (n) => String(n).padStart(2, '0');
+    return `${p(Math.floor(f / (3600 * FPS)))}:${p(Math.floor(f / (60 * FPS)) % 60)}:${p(Math.floor(f / FPS) % 60)}:${p(f % FPS)}`;
+  };
+
+  // chapters grid + scrub ticks
+  const grid = $('chapters');
+  CH.forEach((c, i) => {
+    const b = document.createElement('button');
+    b.className = 'chapter';
+    b.dataset.i = i;
+    b.innerHTML = `<img src="${c.id}.jpg" alt="${c.zh}" loading="lazy" width="960" height="540">
+      <span class="meta"><span>${String(i + 1).padStart(2, '0')}</span><span>${tc(c.start)}</span></span>
+      <span class="zh">${c.zh}</span><span class="en">${c.en}</span>`;
+    b.addEventListener('click', () => { seek(c.start + 0.01, true); $('screen').scrollIntoView({ behavior: 'smooth', block: 'center' }); });
+    grid.appendChild(b);
+    if (i > 0) {
+      const t = document.createElement('div');
+      t.className = 'tick';
+      t.style.left = (c.start / TOTAL * 100) + '%';
+      $('scrub').appendChild(t);
+    }
+  });
+
+  // two-deck sequential player (one file per scene)
+  const decks = [$('vA'), $('vB')];
+  let cur = 0, active = decks[0], started = false, wantPlay = false;
+  const load = (v, i) => { if (v.dataset.i !== String(i)) { v.dataset.i = i; v.src = CH[i].id + '.mp4'; v.load(); } };
+  load(decks[0], 0);
+  load(decks[1], 1);
+
+  function show(v) {
+    decks.forEach((d) => d.classList.toggle('off', d !== v));
+    active = v;
+  }
+  function chapterAt(t) { let i = 0; CH.forEach((c, k) => { if (t >= c.start) i = k; }); return i; }
+  function seek(t, play) {
+    t = Math.min(TOTAL - 0.05, Math.max(0, t));
+    const i = chapterAt(t);
+    const other = decks.find((d) => d !== active);
+    let v = active;
+    if (active.dataset.i !== String(i)) { v = other.dataset.i === String(i) ? other : active; load(v, i); }
+    decks.forEach((d) => { if (d !== v) d.pause(); });
+    cur = i;
+    const go = () => {
+      try { v.currentTime = t - CH[i].start; } catch (e) {}
+      show(v);
+      if (i + 1 < CH.length) load(decks.find((d) => d !== v), i + 1);
+      if (play || wantPlay) start(v);
+      paint(t);
+    };
+    if (v.readyState >= 1) go(); else v.addEventListener('loadedmetadata', go, { once: true });
+  }
+  function start(v) {
+    started = true; wantPlay = true;
+    $('bigPlay').hidden = true;
+    const p = v.play();
+    if (p && p.catch) p.catch(() => { wantPlay = false; icons(); });
+    icons();
+  }
+  function icons() {
+    const playing = !active.paused;
+    $('icoPlay').hidden = playing;
+    $('icoPause').hidden = !playing;
+  }
+  function paint(t) {
+    $('fill').style.width = (t / TOTAL * 100) + '%';
+    $('tcNow').textContent = tc(t);
+    $('scrub').setAttribute('aria-valuenow', Math.round(t));
+    const i = chapterAt(t), c = CH[i];
+    $('now').innerHTML = `<span class="tc">${String(i + 1).padStart(2, '0')} / 08</span><strong>${c.zh}</strong><span>${c.en}</span>`;
+    document.querySelectorAll('.chapter').forEach((b) => b.classList.toggle('on', +b.dataset.i === i));
+  }
+  decks.forEach((v) => {
+    v.addEventListener('timeupdate', () => { if (v === active) paint(CH[+v.dataset.i].start + v.currentTime); });
+    v.addEventListener('play', icons);
+    v.addEventListener('pause', icons);
+    v.addEventListener('ended', () => {
+      if (v !== active) return;
+      const i = +v.dataset.i;
+      if (i + 1 >= CH.length) { wantPlay = false; icons(); return; }
+      const next = decks.find((d) => d !== v);
+      load(next, i + 1);
+      cur = i + 1;
+      try { next.currentTime = 0; } catch (e) {}
+      show(next);
+      start(next);
+      setTimeout(() => load(v, Math.min(CH.length - 1, i + 2)), 300);
+    });
+  });
+  $('bigPlay').addEventListener('click', () => start(active));
+  $('toggle').addEventListener('click', () => {
+    if (active.paused) start(active); else { wantPlay = false; active.pause(); }
+  });
+  $('screen').addEventListener('click', (e) => {
+    if (e.target.closest('.big-play')) return;
+    if (started) $('toggle').click();
+  });
+  $('fs').addEventListener('click', () => {
+    const el = $('screen');
+    const req = el.requestFullscreen || el.webkitRequestFullscreen;
+    if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+    else if (req) Promise.resolve(req.call(el)).catch(() => {});
+  });
+  const scrub = $('scrub');
+  const fromEvent = (e) => { const r = scrub.getBoundingClientRect(); return (e.clientX - r.left) / r.width * TOTAL; };
+  let dragging = false;
+  scrub.addEventListener('pointerdown', (e) => { dragging = true; scrub.setPointerCapture(e.pointerId); paint(Math.max(0, Math.min(TOTAL, fromEvent(e)))); });
+  scrub.addEventListener('pointermove', (e) => { if (dragging) paint(Math.max(0, Math.min(TOTAL, fromEvent(e)))); });
+  scrub.addEventListener('pointerup', (e) => { if (!dragging) return; dragging = false; seek(fromEvent(e), false); });
+  scrub.addEventListener('keydown', (e) => {
+    const t = CH[+active.dataset.i].start + active.currentTime;
+    if (e.key === 'ArrowRight') { seek(t + 5); e.preventDefault(); }
+    if (e.key === 'ArrowLeft') { seek(t - 5); e.preventDefault(); }
+  });
+  paint(0);
+
+  // voice-casting strip chart (pitch in Hz, log scale)
+  const V = [["zf_001",260],["zf_002",216],["zf_003",215],["zf_004",214],["zf_005",220],["zf_006",201],["zf_007",206],["zf_008",209],["zf_017",289],["zf_018",240],["zf_019",167],["zf_021",236],["zf_022",178],["zf_023",208],["zf_024",205],["zf_026",228],["zf_027",214],["zf_028",230],["zf_032",211],["zf_036",196],["zf_038",299],["zf_039",204],["zf_040",189],["zf_042",259],["zf_043",260],["zf_044",224],["zf_046",156],["zf_047",207],["zf_048",230],["zf_049",220],["zf_051",202],["zf_059",217],["zf_060",247],["zf_067",251],["zf_070",232],["zf_071",212],["zf_072",280],["zf_073",271],["zf_074",287],["zf_075",246],["zf_076",273],["zf_077",251],["zf_078",191],["zf_079",132],["zf_083",232],["zf_090",234],["zf_092",276],["zf_093",263],["zf_094",171],["zf_099",174],["zm_009",108],["zm_010",113],["zm_011",110],["zm_012",126],["zm_013",106],["zm_014",92],["zm_015",106],["zm_016",141],["zm_020",189],["zm_025",104],["zm_029",101],["zm_030",97],["zm_031",96],["zm_033",105],["zm_034",102],["zm_035",111],["zm_041",192],["zm_045",126],["zm_050",142],["zm_052",145],["zm_053",117],["zm_054",137],["zm_055",100],["zm_056",130],["zm_057",104],["zm_058",128],["zm_061",111],["zm_062",98],["zm_063",139],["zm_064",86],["zm_065",129],["zm_066",112],["zm_068",115],["zm_069",139],["zm_080",121],["zm_081",125],["zm_082",98],["zm_089",135],["zm_091",118]];
+  const CAST = { zm_034: ['阿灯 Deng', '#7fd8e6'], zf_046: ['星鲸 Whale', '#9fc4ff'], zf_019: ['旁白 Narrator', '#eef0f8'], zf_074: ['小光 Guang', '#ffd36b'] };
+  const Wd = 1000, Hd = 190, x0 = 40, x1 = 980, lo = 80, hi = 320;
+  const X = (f) => x0 + (Math.log(f) - Math.log(lo)) / (Math.log(hi) - Math.log(lo)) * (x1 - x0);
+  let s = `<svg viewBox="0 0 ${Wd} ${Hd}" role="img" aria-label="90 种声音的音高分布，选中的四个声音被标出">`;
+  s += `<line x1="${x0}" x2="${x1}" y1="120" y2="120" stroke="rgba(159,196,255,.3)"/>`;
+  [80, 100, 125, 150, 200, 250, 300].forEach((f) => {
+    s += `<line x1="${X(f)}" x2="${X(f)}" y1="120" y2="126" stroke="rgba(159,196,255,.45)"/>`;
+    s += `<text x="${X(f)}" y="142" fill="#a3aecd" font-size="12" text-anchor="middle" font-family="IBM Plex Mono, monospace">${f} Hz</text>`;
+  });
+  s += `<text x="${x0}" y="170" fill="#6f7ba0" font-size="12" font-family="IBM Plex Mono, monospace">低 low</text>`;
+  s += `<text x="${x1}" y="170" fill="#6f7ba0" font-size="12" text-anchor="end" font-family="IBM Plex Mono, monospace">高 high</text>`;
+  const bins = {};
+  V.forEach(([v, f]) => {
+    const bx = Math.round(X(f) / 9);
+    bins[bx] = (bins[bx] || 0) + 1;
+    const y = 112 - (bins[bx] - 1) * 9;
+    const c = CAST[v];
+    if (!c) s += `<circle cx="${X(f)}" cy="${y}" r="3.6" fill="${v[1] === 'm' ? '#4f8a9a' : '#6f6aa8'}" opacity=".75"/>`;
+  });
+  const lab = [];
+  V.forEach(([v, f]) => { if (CAST[v]) lab.push([v, f]); });
+  lab.sort((a, b) => a[1] - b[1]).forEach(([v, f], k) => {
+    const [name, color] = CAST[v];
+    const x = X(f), y = 112;
+    const ly = 34 + (k % 2) * 22;
+    s += `<line x1="${x}" x2="${x}" y1="${ly + 6}" y2="${y - 6}" stroke="${color}" stroke-opacity=".6"/>`;
+    s += `<circle cx="${x}" cy="${y}" r="6" fill="${color}"/>`;
+    s += `<text x="${x}" y="${ly}" fill="${color}" font-size="13" text-anchor="middle" font-family="Noto Sans SC, sans-serif">${name} · ${f} Hz</text>`;
+  });
+  s += '</svg>';
+  $('chart').innerHTML = s;
+})();
+</script>

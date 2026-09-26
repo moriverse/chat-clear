@@ -22,7 +22,7 @@ CHAPTERS = {
     's07': ('回答', 'The answer'),
     's08': ('尾声', 'Epilogue'),
 }
-POSTER_AT = {'s01': 5.5, 's02': 14.7, 's03': 7.4, 's04': 13.0, 's05': 24.0, 's06': 35.5, 's07': 31.0, 's08': 8.0}
+POSTER_AT = {'s01': 5.5, 's02': 10.2, 's03': 16.0, 's04': 27.0, 's05': 22.3, 's06': 35.5, 's07': 31.0, 's08': 9.4}
 
 
 def run(cmd):
@@ -34,6 +34,7 @@ def main():
     ap.add_argument('--src', default=os.path.join(BUILD, 'film.mp4'))
     ap.add_argument('--vbr', default='1850k')
     ap.add_argument('--skip-video', action='store_true')
+    ap.add_argument('--only', default='', help='comma list of scene ids to (re)encode; others are kept')
     a = ap.parse_args()
     os.makedirs(SITE, exist_ok=True)
     tl = json.load(open(os.path.join(BUILD, 'timeline.json')))
@@ -42,7 +43,7 @@ def main():
         sid, s0, s1 = sc['id'], sc['start'], sc['end']
         out = os.path.join(SITE, f'{sid}.mp4')
         poster = os.path.join(SITE, f'{sid}.jpg')
-        if not a.skip_video:
+        if not a.skip_video and (not a.only or sid in a.only.split(',')):
             common = ['ffmpeg', '-y', '-loglevel', 'error', '-ss', f'{s0:.3f}', '-t', f'{s1 - s0:.3f}', '-i', a.src]
             venc = ['-c:v', 'libx264', '-preset', 'slow', '-b:v', a.vbr, '-maxrate', '3500k', '-bufsize', '6000k',
                     '-pix_fmt', 'yuv420p', '-profile:v', 'high', '-g', '48']

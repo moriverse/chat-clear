@@ -9,6 +9,12 @@ or samples; it's about 25,000 lines of Python.
 > sunrise or her light will go out. The robot tries everything, and in the end puts his
 > own heart into the lamp to shoot a pillar of light into the sky. Then the sky answers.
 
+## Watch
+
+- `out/a-lamp-and-a-star.mp4`: the finished film, 1920×1080, 24 fps, 4:02, stereo. Chinese dialogue with burned-in Chinese + English subtitles.
+- `out/a-lamp-and-a-star.srt`: the subtitles as a separate file.
+- `site/index.html`: the web player page. It plays the film as eight per-scene chapter files, which `tools/make_site.py` builds into `build/site/`.
+
 ## How it was made
 
 | Part | How |
