@@ -1332,7 +1332,7 @@ def s05(S):
     S.n('trombone', 'A3', tf, spl - tf + 0.05, 84)
     tb = np.arange(tf, spl, 0.01)
     S.bend('trombone', [(tf - 0.01, 0.0)] + [(t, -12 * ((t - tf) / (spl - tf)) ** 1.3) for t in tb] + [(spl + 0.2, 0.0)])
-    gliss(S, 'harp', 'A3', 'A6', spl - 0.05, 0.7, 70, 50, DMAJ, down=True)
+    gliss(S, 'harp', 'A3', 'A6', spl - 0.05, spl - 0.05 - tf, 70, 50, DMAJ, down=True)
     S.hit('tower_fall', tf, 'slide', 'slide whistle + trombone glissando down an octave + harp gliss down')
     # --- splash
     S.harm(spl, 'D')
@@ -2103,8 +2103,8 @@ def limiter_gain(x, ceiling_db):
     return np.minimum(g, need).astype(np.float32)
 
 
-def ride_gain(mix, pivot=-22.0, ratio=2.0):
-    """Slow 'gain riding' (like a mixer's hand on the fader): 2:1 around the pivot on momentary loudness,
+def ride_gain(mix, pivot=-22.0, ratio=1.6):
+    """Slow 'gain riding' (like a mixer's hand on the fader): 1.6:1 around the pivot on momentary loudness,
     attack 0.35 s so hits still punch, release 1.8 s; no upward gain for near-silence; the darkness after
     deng_dark is protected; an extra dip under the two climax lines (G09, D15)."""
     tm, lm = loud_curve(mix, 0.4, 0.01)
@@ -2125,9 +2125,9 @@ def ride_gain(mix, pivot=-22.0, ratio=2.0):
     m = (CT >= ws - 1.0) & (CT < ws)
     x = (CT[m] - (ws - 1.0))
     g[m] = np.minimum(g[m], gd + (g[m] - gd) * x)
-    for lid, dip in (('G09', -3.5), ('D15', -3.0)):
+    for lid, dip in (('G09', -6.0), ('D15', -5.0)):
         s0, e0 = LINE[lid]
-        pts = [(s0 - 0.35, 0), (s0 - 0.05, dip), (e0, dip), (e0 + 0.4, 0)]
+        pts = [(s0 - 0.35, 0), (s0 - 0.05, dip), (e0, dip), (e0 + 0.2, 0)]
         mm = (CT >= pts[0][0]) & (CT <= pts[-1][0])
         g[mm] += np.interp(CT[mm], [q[0] for q in pts], [q[1] for q in pts])
     np.save(str(MUSDIR / 'ride_gain_db.npy'), g.astype(np.float32))
